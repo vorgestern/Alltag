@@ -52,6 +52,13 @@ return function(L, proc)
 end
 )__");
 
+const auto applypairs_impl=LuaCode(R"__(
+return function(L, proc)
+    if not L then return end
+    for k,v in pairs(L) do proc(k,v) end
+end
+)__");
+
 extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
@@ -64,5 +71,6 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
     Q<<make_pair("map-impl", map_impl)>>1; Q>>LuaField("map");
     Q<<make_pair("keymap-impl", keymap_impl)>>1; Q>>LuaField("keymap");
     Q<<make_pair("apply-impl", apply_impl)>>1; Q>>LuaField("apply");
+    Q<<make_pair("applypairs-impl", applypairs_impl)>>1; Q>>LuaField("applypairs");
     return 1;
 }

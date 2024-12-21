@@ -47,16 +47,22 @@ TCASE "Version" {
 
 TCASE "Functions present" {
     TT("formatany present", function(T)
-        T:ASSERT_EQ(type(alltag.formatany), "function")
+        T:ASSERT_EQ("function", type(alltag.formatany))
     end),
     TT("keyescape present", function(T)
-        T:ASSERT_EQ(type(alltag.keyescape), "function")
+        T:ASSERT_EQ("function", type(alltag.keyescape))
     end),
     TT("map present", function(T)
-        T:ASSERT_EQ(type(alltag.map), "function")
+        T:ASSERT_EQ("function", type(alltag.map))
     end),
     TT("keymap present", function(T)
-        T:ASSERT_EQ(type(alltag.keymap), "function")
+        T:ASSERT_EQ("function", type(alltag.keymap))
+    end),
+    TT("apply present", function(T)
+        T:ASSERT_EQ("function", type(alltag.apply))
+    end),
+    TT("applypairs present", function(T)
+        T:ASSERT_EQ("function", type(alltag.applypairs))
     end),
 },
 
@@ -168,13 +174,27 @@ TCASE "apply" {
         local X=alltag.apply(nil, function(x) end)
         T:ASSERT_EQ("nil", type(X))
     end),
-    TT("handle nil", function(T)
-        local ok,X=pcall(alltag.keymap, {x=21,y=true,z=23}, function(x) if type(x)=="number" then return 2*x end end)
-        T:ASSERT(ok)
-        T:ASSERT_EQ("table", type(X))
-        T:ASSERT_EQ(42, X.x)
-        T:ASSERT_NIL(X.y)
-        T:ASSERT_EQ(46, X.z)
+},
+
+TCASE "applypairs" {
+    TT("regular call", function(T)
+        local Keys={"x", "y", "z"}
+        local Collector={}
+        local X=alltag.applypairs({21,22,23}, function(k,v) Collector[Keys[k] or k]=v end)
+        T:ASSERT_EQ("number", type(Collector.x))
+        T:ASSERT_EQ("number", type(Collector.y))
+        T:ASSERT_EQ("number", type(Collector.z))
+        T:ASSERT_EQ(21, Collector.x)
+        T:ASSERT_EQ(22, Collector.y)
+        T:ASSERT_EQ(23, Collector.z)
+    end),
+    TT("empty", function(T)
+        local X=alltag.applypairs({}, function(k,v) end)
+        T:ASSERT_EQ("nil", type(X))
+    end),
+    TT("tolerate nil", function(T)
+        local X=alltag.applypairs(nil, function(k,v) end)
+        T:ASSERT_EQ("nil", type(X))
     end),
 }
 
