@@ -64,6 +64,9 @@ TCASE "Functions present" {
     TT("applypairs present", function(T)
         T:ASSERT_EQ("function", type(alltag.applypairs))
     end),
+    TT("findfirst present", function(T)
+        T:ASSERT_EQ("function", type(alltag.findfirst))
+    end),
 },
 
 TCASE "keyescape" {
@@ -195,6 +198,31 @@ TCASE "applypairs" {
     TT("tolerate nil", function(T)
         local X=alltag.applypairs(nil, function(k,v) end)
         T:ASSERT_EQ("nil", type(X))
+    end),
+},
+
+TCASE "findfirst" {
+    TT("regular call", function(T)
+        local v,k=alltag.findfirst({21,22,23}, function(v) return v==22 end)
+        T:ASSERT_EQ("number", type(v))
+        T:ASSERT_EQ("number", type(k))
+        T:ASSERT_EQ(22, v)
+        T:ASSERT_EQ(2, k)
+    end),
+    TT("empty", function(T)
+        local v,k=alltag.findfirst({}, function(v) end)
+        T:ASSERT_EQ("nil", type(v))
+        T:ASSERT_EQ("nil", type(k))
+    end),
+    TT("tolerate nil", function(T)
+        local v,k=alltag.findfirst(nil, function(v) end)
+        T:ASSERT_EQ("nil", type(v))
+        T:ASSERT_EQ("nil", type(k))
+        local v,k=alltag.findfirst({21,22,23})
+        T:ASSERT_EQ("number", type(v))
+        T:ASSERT_EQ("number", type(k))
+        T:ASSERT_EQ(21, v)
+        T:ASSERT_EQ(1, k)
     end),
 }
 
