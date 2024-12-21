@@ -149,6 +149,33 @@ TCASE "keymap" {
         T:ASSERT_NIL(X.y)
         T:ASSERT_EQ(46, X.z)
     end),
+},
+
+TCASE "apply" {
+    TT("regular call", function(T)
+        local Collector={}
+        local X=alltag.apply({21,22,23}, function(x) table.insert(Collector, tostring(x)) end)
+        T:ASSERT_EQ(3, #Collector)
+        T:ASSERT_EQ("21", Collector[1])
+        T:ASSERT_EQ("22", Collector[2])
+        T:ASSERT_EQ("23", Collector[3])
+    end),
+    TT("empty", function(T)
+        local X=alltag.apply({}, function(x) end)
+        T:ASSERT_EQ("nil", type(X))
+    end),
+    TT("tolerate nil", function(T)
+        local X=alltag.apply(nil, function(x) end)
+        T:ASSERT_EQ("nil", type(X))
+    end),
+    TT("handle nil", function(T)
+        local ok,X=pcall(alltag.keymap, {x=21,y=true,z=23}, function(x) if type(x)=="number" then return 2*x end end)
+        T:ASSERT(ok)
+        T:ASSERT_EQ("table", type(X))
+        T:ASSERT_EQ(42, X.x)
+        T:ASSERT_NIL(X.y)
+        T:ASSERT_EQ(46, X.z)
+    end),
 }
 
 )
