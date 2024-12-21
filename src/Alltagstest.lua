@@ -73,6 +73,9 @@ TCASE "Functions present" {
     TT("filter present", function(T)
         T:ASSERT_EQ("function", type(alltag.filter))
     end),
+    TT("pipe_lines present", function(T)
+        T:ASSERT_EQ("function", type(alltag.pipe_lines))
+    end),
 },
 
 TCASE "keyescape" {
@@ -276,6 +279,28 @@ TCASE "filter" {
         local X=alltag.filter({21,22,23})
         T:ASSERT_EQ("table", type(X))
         T:ASSERT_EQ(0, #X)
+    end),
+},
+
+TCASE "pipe_lines" {
+    TT("regular call", function(T)
+        local count=0
+        alltag.pipe_lines("lua src/testhelper.lua countdown 10", function(line) count=count+1 end)
+        T:ASSERT_EQ(11, count)
+        count=0
+        local ok=pcall(alltag.pipe_lines, "lua src/testhelper.lua exit 0", function(line) count=count+1 end)
+        T:ASSERT(ok)
+        T:ASSERT_EQ(0, count)
+    end),
+    TT("empty", function(T)
+        local ok,rest=pcall(alltag.pipe_lines, "", function(line) end)
+        T:ASSERT(ok)
+    end),
+    TT("tolerate nil", function(T)
+        local ok=pcall(alltag.pipe_lines, nil, function(v) end)
+        T:ASSERT_NIL(ok)
+        local ok=pcall(alltag.pipe_lines, "lua src/testhelper.lua exit 0", nil)
+        T:ASSERT(ok)
     end),
 }
 

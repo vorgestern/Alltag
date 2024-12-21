@@ -86,6 +86,21 @@ return function(L, pred)
 end
 )__");
 
+const auto pipe_lines_impl=LuaCode(R"__(
+return function(command, linehandler)
+    local pipe=io.popen(command);
+    if pipe then
+        for line in pipe:lines() do linehandler(line) end
+        local flag,status,rc=pipe:close()
+        if not flag then
+            error(string.format("Error %d running '%s'\nstatus=%s", rc, command, status))
+        end
+    else
+        error(string.format("Error running '%s'", command))
+    end
+end
+)__");
+
 extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
@@ -102,5 +117,6 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
     Q<<make_pair("findfirst-impl", findfirst_impl)>>1; Q>>LuaField("findfirst");
     Q<<make_pair("contains-impl", contains_impl)>>1; Q>>LuaField("contains");
     Q<<make_pair("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
+    Q<<make_pair("pipe_lines-impl", pipe_lines_impl)>>1; Q>>LuaField("pipe_lines");
     return 1;
 }
