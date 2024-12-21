@@ -70,6 +70,9 @@ TCASE "Functions present" {
     TT("contains present", function(T)
         T:ASSERT_EQ("function", type(alltag.contains))
     end),
+    TT("filter present", function(T)
+        T:ASSERT_EQ("function", type(alltag.filter))
+    end),
 },
 
 TCASE "keyescape" {
@@ -248,6 +251,31 @@ TCASE "contains" {
         T:ASSERT_NIL(k)
         local k=alltag.contains()
         T:ASSERT_NIL(k)
+    end),
+},
+
+TCASE "filter" {
+    TT("regular call", function(T)
+        local X=alltag.filter({21,22,23}, function(v) return v>21 end)
+        T:ASSERT_EQ("table", type(X))
+        T:ASSERT_EQ(2, #X)
+        T:ASSERT_EQ(22, X[1])
+        T:ASSERT_EQ(23, X[2])
+        local X=alltag.filter({21,22,23}, function(v) end)
+        T:ASSERT_EQ("table", type(X))
+        T:ASSERT_EQ(0, #X)
+    end),
+    TT("empty", function(T)
+        local X=alltag.filter({}, function(v) return true end)
+        T:ASSERT_EQ("table", type(X))
+        T:ASSERT_EQ(0, #X)
+    end),
+    TT("tolerate nil", function(T)
+        local X=alltag.filter(nil, function(v) return true end)
+        T:ASSERT_NIL(X)
+        local X=alltag.filter({21,22,23})
+        T:ASSERT_EQ("table", type(X))
+        T:ASSERT_EQ(0, #X)
     end),
 }
 

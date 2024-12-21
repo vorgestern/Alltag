@@ -76,6 +76,16 @@ return function(L, item)
 end
 )__");
 
+const auto filter_impl=LuaCode(R"__(
+return function(L, pred)
+    if not L then return end
+    if not pred then return {} end
+    local result={}
+    for k,v in ipairs(L) do if pred(v) then table.insert(result,v) end end
+    return result
+end
+)__");
+
 extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
@@ -91,5 +101,6 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
     Q<<make_pair("applypairs-impl", applypairs_impl)>>1; Q>>LuaField("applypairs");
     Q<<make_pair("findfirst-impl", findfirst_impl)>>1; Q>>LuaField("findfirst");
     Q<<make_pair("contains-impl", contains_impl)>>1; Q>>LuaField("contains");
+    Q<<make_pair("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
     return 1;
 }
