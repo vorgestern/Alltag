@@ -52,6 +52,12 @@ TCASE "Functions present" {
     TT("keyescape present", function(T)
         T:ASSERT_EQ(type(alltag.keyescape), "function")
     end),
+    TT("map present", function(T)
+        T:ASSERT_EQ(type(alltag.map), "function")
+    end),
+    TT("keymap present", function(T)
+        T:ASSERT_EQ(type(alltag.keymap), "function")
+    end),
 },
 
 TCASE "keyescape" {
@@ -92,6 +98,56 @@ TCASE "formatany" {
         T:ASSERT_EQ(R.a.aa.aaa, 111)
         T:ASSERT_EQ(R.a.ab.aba, 121)
         T:ASSERT_EQ(R.b.ba, 21)
+    end),
+},
+
+TCASE "map" {
+    TT("regular call", function(T)
+        local X=alltag.map({21,22,23}, function(x) return 2*x end)
+        T:ASSERT_EQ(X[1], 42)
+        T:ASSERT_EQ(X[2], 44)
+        T:ASSERT_EQ(X[3], 46)
+    end),
+    TT("empty", function(T)
+        local X=alltag.map({}, function(x) return 2*x end)
+        T:ASSERT_EQ("table", type(X))
+        T:ASSERT_EQ(0, #X)
+    end),
+    TT("tolerate nil", function(T)
+        local X=alltag.map(nil, function(x) return 2*x end)
+        T:ASSERT_EQ("nil", type(X))
+    end),
+    TT("handle nil", function(T)
+        local ok,X=pcall(alltag.map, {21,true,23}, function(x) if type(x)=="number" then return 2*x end end)
+        T:ASSERT_NIL(ok)
+        T:ASSERT_EQ("string", type(X))
+        T:PRINTF("Error message: %s", X)
+    end),
+},
+
+TCASE "keymap" {
+    TT("regular call", function(T)
+        local X=alltag.keymap({x=21,y=22,z=23}, function(x,k) return 2*x end)
+        T:ASSERT_EQ(42, X.x)
+        T:ASSERT_EQ(44, X.y)
+        T:ASSERT_EQ(46, X.z)
+    end),
+    TT("empty", function(T)
+        local X=alltag.keymap({}, function(x,k) return 2*x end)
+        T:ASSERT_EQ("table", type(X))
+        T:ASSERT_EQ(0, #X)
+    end),
+    TT("tolerate nil", function(T)
+        local X=alltag.keymap(nil, function(x,k) return 2*x end)
+        T:ASSERT_EQ("nil", type(X))
+    end),
+    TT("handle nil", function(T)
+        local ok,X=pcall(alltag.keymap, {x=21,y=true,z=23}, function(x) if type(x)=="number" then return 2*x end end)
+        T:ASSERT(ok)
+        T:ASSERT_EQ("table", type(X))
+        T:ASSERT_EQ(42, X.x)
+        T:ASSERT_NIL(X.y)
+        T:ASSERT_EQ(46, X.z)
     end),
 }
 
