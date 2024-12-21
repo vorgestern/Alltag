@@ -69,6 +69,13 @@ return function(L, pred)
 end
 )__");
 
+const auto contains_impl=LuaCode(R"__(
+return function(L, item)
+    if not L or not item then return end
+    for k,v in pairs(L) do if v==item then return k end end
+end
+)__");
+
 extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
@@ -83,5 +90,6 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
     Q<<make_pair("apply-impl", apply_impl)>>1; Q>>LuaField("apply");
     Q<<make_pair("applypairs-impl", applypairs_impl)>>1; Q>>LuaField("applypairs");
     Q<<make_pair("findfirst-impl", findfirst_impl)>>1; Q>>LuaField("findfirst");
+    Q<<make_pair("contains-impl", contains_impl)>>1; Q>>LuaField("contains");
     return 1;
 }

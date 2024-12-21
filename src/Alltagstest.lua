@@ -67,6 +67,9 @@ TCASE "Functions present" {
     TT("findfirst present", function(T)
         T:ASSERT_EQ("function", type(alltag.findfirst))
     end),
+    TT("contains present", function(T)
+        T:ASSERT_EQ("function", type(alltag.contains))
+    end),
 },
 
 TCASE "keyescape" {
@@ -223,6 +226,28 @@ TCASE "findfirst" {
         T:ASSERT_EQ("number", type(k))
         T:ASSERT_EQ(21, v)
         T:ASSERT_EQ(1, k)
+    end),
+},
+
+TCASE "contains" {
+    TT("regular call", function(T)
+        local k=alltag.contains({21,22,23}, 22)
+        T:ASSERT_EQ("number", type(k))
+        T:ASSERT_EQ(2, k)
+        local k=alltag.contains({21,22,23}, 99)
+        T:ASSERT_NIL(k)
+    end),
+    TT("empty", function(T)
+        local k=alltag.contains({}, 22)
+        T:ASSERT_NIL(k)
+    end),
+    TT("tolerate nil", function(T)
+        local k=alltag.contains(nil, 22)
+        T:ASSERT_NIL(k)
+        local k=alltag.contains({21,22,23})
+        T:ASSERT_NIL(k)
+        local k=alltag.contains()
+        T:ASSERT_NIL(k)
     end),
 }
 
