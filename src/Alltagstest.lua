@@ -10,7 +10,7 @@ local ok,alltag=pcall(require, "alltag")
 if not ok then
     error("\n\tThis is a test suite for 'alltag'."..
     "\n\tHowever, require 'alltag' failed."..
-    "\n\tInstall and build it from luaaide.git.")
+    "\n\tInstall and build it right here.")
 end
 
 local ok,ULU=pcall(require, "ulutest")
@@ -18,7 +18,7 @@ local ok,ULU=pcall(require, "ulutest")
 if not ok then
     error("\n\tThis is a Unit Test implemented with 'ulutest'."..
     "\n\tHowever, require 'ulutest' failed."..
-    "\n\tInstall it from luaaide.git.")
+    "\n\tBuild it as a submodule of submodule LuaAide right here.")
 end
 
 local TT=ULU.TT
@@ -46,34 +46,34 @@ TCASE "Version" {
 },
 
 TCASE "Functions present" {
-    TT("formatany present", function(T)
+    TT("formatany", function(T)
         T:ASSERT_EQ("function", type(alltag.formatany))
     end),
-    TT("keyescape present", function(T)
+    TT("keyescape", function(T)
         T:ASSERT_EQ("function", type(alltag.keyescape))
     end),
-    TT("map present", function(T)
+    TT("map", function(T)
         T:ASSERT_EQ("function", type(alltag.map))
     end),
-    TT("keymap present", function(T)
+    TT("keymap", function(T)
         T:ASSERT_EQ("function", type(alltag.keymap))
     end),
-    TT("apply present", function(T)
+    TT("apply", function(T)
         T:ASSERT_EQ("function", type(alltag.apply))
     end),
-    TT("applypairs present", function(T)
+    TT("applypairs", function(T)
         T:ASSERT_EQ("function", type(alltag.applypairs))
     end),
-    TT("findfirst present", function(T)
+    TT("findfirst", function(T)
         T:ASSERT_EQ("function", type(alltag.findfirst))
     end),
-    TT("contains present", function(T)
+    TT("contains", function(T)
         T:ASSERT_EQ("function", type(alltag.contains))
     end),
-    TT("filter present", function(T)
+    TT("filter", function(T)
         T:ASSERT_EQ("function", type(alltag.filter))
     end),
-    TT("pipe_lines present", function(T)
+    TT("pipe_lines", function(T)
         T:ASSERT_EQ("function", type(alltag.pipe_lines))
     end),
 },
