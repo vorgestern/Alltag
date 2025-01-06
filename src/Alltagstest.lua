@@ -117,6 +117,9 @@ TCASE "formatany" {
         T:ASSERT_EQ(R.a.ab.aba, 121)
         T:ASSERT_EQ(R.b.ba, 21)
     end),
+    TT("without arguments, 'return nil' is expected", function(T)
+        T:ASSERT_EQ("return nil", alltag.formatany())
+    end),
 },
 
 TCASE "map" {
