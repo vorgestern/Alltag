@@ -98,3 +98,23 @@ to function linefunc. Will error if command fails.
         alltag.pipe_lines("lua src/testhelper.lua countdown 10", function(line) count=count+1 end)
 
         print(count)                                        11
+
+# How to build: first
+
+    git submodule init
+    git submodule update
+    cd LuaAide
+    git submodule init
+    git submodule update
+
+## .. then on Windows
+
+Use Visual Studio 2022 (VS17)
+
+- Edit buildsys/VS17/Lua.props to point to your Lua installation.
+- Build with buildsys/VS17/alltag.sln
+
+## .. else on Linux
+
+- Make sure Lua is installed: ```sudo apt-get install lua5.4``` or equivalent.
+- Use Makefile

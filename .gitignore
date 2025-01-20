@@ -1,4 +1,7 @@
 
+alltag.so
+b/
+
 *.dll
 buildsys/VS17/.vs
 buildsys/VS17/Debug
