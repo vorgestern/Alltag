@@ -32,7 +32,7 @@ end
 
 local function setup1(c) return string.format("abc%cdef", c) end
 
-ULU.RUN(
+ULU.RUN {
 
 TCASE "Version" {
     TT("version present", function(T)
@@ -307,4 +307,4 @@ TCASE "pipe_lines" {
     end),
 }
 
-)
+}
