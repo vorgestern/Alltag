@@ -92,8 +92,11 @@ return function(command, linehandler)
     if pipe then
         for line in pipe:lines() do linehandler(line) end
         local flag,status,rc=pipe:close()
-        if not flag then
-            error(string.format("Error %d running '%s'\nstatus=%s", rc, command, status))
+--      if not flag then
+--          error(string.format("Error %d running '%s'\nstatus=%s", rc, command, status))
+--      end
+        if not flag then return status, math.tointeger(rc)
+        else return 0
         end
     else
         error(string.format("Error running '%s'", command))
