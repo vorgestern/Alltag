@@ -104,6 +104,22 @@ return function(command, linehandler)
 end
 )__");
 
+const auto sortedpairs_impl=LuaCode(R"__(
+return function(X, sorter)
+    local Copy={}
+    if X then
+        for k,v in pairs(X) do table.insert(Copy, {k,v}) end
+    end
+    sorter=sorter or function(a,b) return a[1]<b[1] end
+    table.sort(Copy, sorter)
+    return function(state, control_ignored)
+        state.control=next(state.K, state.control)
+        if not state.control then return end
+        return state.K[state.control][1], state.K[state.control][2]
+    end, {K=Copy}
+end
+)__");
+
 extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
@@ -121,5 +137,6 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
     Q<<make_pair("contains-impl", contains_impl)>>1; Q>>LuaField("contains");
     Q<<make_pair("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
     Q<<make_pair("pipe_lines-impl", pipe_lines_impl)>>1; Q>>LuaField("pipe_lines");
+    Q<<make_pair("sortedpairs-impl", sortedpairs_impl)>>1; Q>>LuaField("sortedpairs");
     return 1;
 }

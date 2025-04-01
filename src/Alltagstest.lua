@@ -305,6 +305,38 @@ TCASE "pipe_lines" {
         local ok=pcall(alltag.pipe_lines, "lua src/testhelper.lua exit 0", nil)
         T:ASSERT(ok)
     end),
+},
+
+TCASE "sortedpairs" {
+    TT("tolerate nil", function(T)
+        local ok,f,s=pcall(alltag.sortedpairs)
+        T:ASSERT(ok)
+        T:ASSERT_EQ("function", type(f))
+        T:ASSERT_EQ("table", type(s))
+    end),
+    TT("empty", function(T)
+        local ok,f,s=pcall(alltag.sortedpairs, {})
+        T:ASSERT(ok)
+        T:ASSERT_EQ("function", type(f))
+        T:ASSERT_EQ("table", type(s))
+    end),
+    TT("reproducible", function(T)
+        local X={}
+        for k,v in alltag.sortedpairs {a=1, b=2, c=3} do table.insert(X, string.format("%s%s", k, v)) end
+        local Xs=table.concat(X, ", ")
+        T:ASSERT_EQ("a1, b2, c3", Xs)
+        for r=1,100 do
+            X={}
+            for k,v in alltag.sortedpairs {a=1, b=2, c=3} do table.insert(X, string.format("%s%s", k, v)) end
+            local str=table.concat(X, ", ")
+            T:ASSERT_EQ(Xs, str, "Round "..r)
+        end
+    end),
+    TT("descendingorder", function(T)
+        local X={}
+        for k,v in alltag.sortedpairs({a=1, b=2, c=3}, function(a,b) return a[1]>b[1] end) do table.insert(X, string.format("%s%s", k, v)) end
+        T:ASSERT_EQ("c3, b2, a1", table.concat(X, ", "))
+    end),
 }
 
 }
