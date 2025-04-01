@@ -99,7 +99,7 @@ to function linefunc. Will error if command fails.
 
         print(count)                                        11
 
-## alltag.sortedkeys(table, sorter or nil)
+## alltag.sortedpairs(table, sorter or nil)
 
 will iterate over table in a reproducible order.
 
