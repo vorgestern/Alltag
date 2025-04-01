@@ -127,3 +127,7 @@ Use Visual Studio 2022 (VS17)
 
 - Make sure Lua is installed: ```sudo apt-get install lua5.4``` or equivalent.
 - Use Makefile
+
+## .. eventually ..
+
+- Run unittests: ```lua src/Alltagstest.lua```
