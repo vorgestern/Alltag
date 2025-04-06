@@ -105,7 +105,7 @@ will iterate over table in a reproducible order.
 
          for k,v in sortedpairs {a=1, b=2, c=3} do print(k,v) end       k=a,b,c
          for k,v in sortedpairs({a=1, b=2, c=3},
-             function(a,b) return a[1]>b[1] end) do print(k,v) end      k=c,b,a
+             function(a,b) return a>b end) do print(k,v) end            k=c,b,a
 This is useful if you want to put output under version control.
 
 # How to build: first ...
