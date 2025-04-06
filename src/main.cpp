@@ -110,8 +110,11 @@ return function(X, sorter)
     if X then
         for k,v in pairs(X) do table.insert(Copy, {k,v}) end
     end
-    sorter=sorter or function(a,b) return a[1]<b[1] end
-    table.sort(Copy, sorter)
+    if sorter then
+        table.sort(Copy, function(a,b) return sorter(a[1], b[1]) end)
+    else
+        table.sort(Copy, function(a,b) return a[1]<b[1] end)
+    end
     return function(state, control_ignored)
         state.control=next(state.K, state.control)
         if not state.control then return end

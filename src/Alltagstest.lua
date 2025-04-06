@@ -334,7 +334,7 @@ TCASE "sortedpairs" {
     end),
     TT("descendingorder", function(T)
         local X={}
-        for k,v in alltag.sortedpairs({a=1, b=2, c=3}, function(a,b) return a[1]>b[1] end) do table.insert(X, string.format("%s%s", k, v)) end
+        for k,v in alltag.sortedpairs({a=1, b=2, c=3}, function(a,b) return a>b end) do table.insert(X, string.format("%s%s", k, v)) end
         T:ASSERT_EQ("c3, b2, a1", table.concat(X, ", "))
     end),
 }
