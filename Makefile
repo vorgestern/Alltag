@@ -12,9 +12,16 @@ clean:
 	@make -C LuaAide clean
 
 alltag.so: b/main.o LuaAide/libLuaAide.a
+	@echo "\nmake alltag.so: $@"
 	@g++ -shared -fpic -o $@ $^
+
 b/%.o: src/%.cpp $(XHEADER)
 	@g++ -c -Wall -Werror -fpic -o $@ $< $(CPPFLAGS) $(CXXFLAGS)
 
 LuaAide/libLuaAide.a:
+	@echo "\nmake LuaAide"
 	@make -C LuaAide
+
+test:
+	@echo "\nAlltagstest"
+	@lua src/Alltagstest.lua
