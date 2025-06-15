@@ -117,8 +117,17 @@ TCASE "formatany" {
         T:ASSERT_EQ(R.a.ab.aba, 121)
         T:ASSERT_EQ(R.b.ba, 21)
     end),
-    TT("without arguments, 'return nil' is expected", function(T)
+    TT("Without arguments, 'return nil' is expected.", function(T)
         T:ASSERT_EQ("return nil", alltag.formatany())
+    end),
+    TT("Quotes are escaped by using [[..]]", function(T)
+        T:ASSERT_EQ("return [[A \"quoted\" substring]]", alltag.formatany("A \"quoted\" substring"))
+    end),
+    TT("Newlines are escaped by using [[..]].", function(T)
+        T:ASSERT_EQ("return [[A\nmultiline\nstring]]", alltag.formatany("A\nmultiline\nstring"))
+    end),
+    TT("Simple strings are returned in quotes.", function(T)
+        T:ASSERT_EQ("return \"A simple string\"", alltag.formatany("A simple string"))
     end),
 },
 
