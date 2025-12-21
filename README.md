@@ -10,7 +10,7 @@ Read unittest src/Alltagstest.lua for details.
 
 Produces a string representation of the value, that can reproduce value
 when loading it. Data types with a binary internal representation will
-not be represented correctly. 
+not be represented correctly.
 
     print(alltag.formatany(21))                             return 21
     print(alltag.formatany {21,22,23, a=1, b=2})            return {[1]=21, [2]=22, [3]=23, a=1, b=2}
@@ -81,7 +81,7 @@ alltag.contains(L,value) returns the (first) index with List[index]==value,
 or nil if value does not occur in List.
 
     print(alltag.contains({21,22,23}, 22))                  2
-    if alltag.contains({21,22,23}, 28) then 
+    if alltag.contains({21,22,23}, 28) then
         error "unexpected"
     end
 
@@ -110,11 +110,7 @@ This is useful if you want to put output under version control.
 
 # How to build: first ...
 
-    git submodule init
-    git submodule update
-    cd LuaAide
-    git submodule init
-    git submodule update
+    git submodule update --init --recursive
 
 ## .. then on Windows
 
