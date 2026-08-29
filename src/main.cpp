@@ -92,10 +92,7 @@ return function(command, linehandler)
     if pipe then
         for line in pipe:lines() do linehandler(line) end
         local flag,status,rc=pipe:close()
---      if not flag then
---          error(string.format("Error %d running '%s'\nstatus=%s", rc, command, status))
---      end
-        if not flag then return status, math.tointeger(rc)
+        if not flag then return math.tointeger(rc), status
         else return 0
         end
     else
@@ -127,7 +124,7 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
     Q<<newtable
-        <<"0.1.2">>LuaField("version")
+        <<"0.1.3">>LuaField("version")
         <<formatany>>LuaField("formatany")
         <<keyescape>>LuaField("keyescape")
         <<demofail>>LuaField("demofail"); // Produziert eine Fehlermeldung aus einem Aufruf von LuaAide.

@@ -91,12 +91,12 @@ alltag.filter returns only those elements of the list that satisfy predicate.
 
 ## alltag.pipe_lines(command, linefunc)
 
-will execute command as a separate process and passes its output linewise
-to function linefunc. Will error if command fails.
+will execute command as a separate process and pass its output linewise
+to function linefunc. Will error if command fails. Otherwise, returns exitcode
+and status as usual in lua.
 
         local count=0
-        alltag.pipe_lines("lua src/testhelper.lua countdown 10", function(line) count=count+1 end)
-
+        local rc,status=alltag.pipe_lines("lua src/testhelper.lua countdown 10", function(line) count=count+1 end)
         print(count)                                        11
 
 ## alltag.sortedpairs(table, sorter or nil)
