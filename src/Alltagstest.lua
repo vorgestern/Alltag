@@ -1,7 +1,7 @@
 
 local bpattern={
-    ["/"]="LuaAide/ulutest/?.so;",
-    ["\\"]="LuaAide/ulutest\\?.dll;",
+    ["/"]="./?.so;LuaAide/ulutest/?.so;",
+    ["\\"]=".\\?.dll;LuaAide/ulutest\\?.dll;",
 }
 package.cpath=(bpattern[package.config:sub(1,1)] or "") .. package.cpath
 
