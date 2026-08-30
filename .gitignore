@@ -12,3 +12,4 @@ buildsys/VS17/alltag
 buildsys/VS17/packages
 
 .vscode
+install.sh
