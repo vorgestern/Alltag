@@ -117,6 +117,29 @@ TCASE "formatany" {
         T:ASSERT_EQ(R.a.ab.aba, 121)
         T:ASSERT_EQ(R.b.ba, 21)
     end),
+    TT("serialise_list", function(T)
+        local serialised=alltag.formatany {{a=1, b=2}}
+        local ok,R=pcall(load, serialised)
+        T:ASSERT(ok)
+        R=R()
+        T:ASSERT_EQ(#R, 1)
+        T:ASSERT_EQ(type(R[1]), "table")
+        T:ASSERT_EQ(R[1].a, 1)
+        T:ASSERT_EQ(R[1].b, 2)
+    end),
+    TT("serialise_list", function(T)
+        local serialised=alltag.formatany {{a=1}, {b=2}, "hoppla"}
+        local ok,R=pcall(load, serialised)
+        T:ASSERT(ok)
+        R=R()
+        T:ASSERT_EQ(#R, 3)
+        T:ASSERT_EQ(type(R[1]), "table")
+        T:ASSERT_EQ(type(R[2]), "table")
+        T:ASSERT_EQ(type(R[3]), "string")
+        T:ASSERT_EQ(R[1].a, 1)
+        T:ASSERT_EQ(R[2].b, 2)
+        T:ASSERT_EQ(R[3], "hoppla")
+    end),
     TT("Without arguments, 'return nil' is expected.", function(T)
         T:ASSERT_EQ("return nil", alltag.formatany())
     end),
