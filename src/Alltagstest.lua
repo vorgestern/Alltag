@@ -100,8 +100,9 @@ TCASE "keyescape" {
 
 TCASE "formatany" {
     TT("1", function(T)
-        local X=alltag.formatany {21,22,23}
-        local ok,R=pcall(load, X)
+        local serialised=alltag.formatany {21,22,23}
+        -- Load string back to compare.
+        local ok,R=pcall(load, serialised)
         T:ASSERT(ok)
         R=R()
         T:ASSERT_EQ(R[1], 21)
@@ -109,15 +110,15 @@ TCASE "formatany" {
         T:ASSERT_EQ(R[3], 23)
     end),
     TT("2", function(T)
-        local X=alltag.formatany {a={aa={aaa=111}, ab={aba=121}}, b={ba=21}}
-        local ok,R=pcall(load, X)
+        local serialised=alltag.formatany {a={aa={aaa=111}, ab={aba=121}}, b={ba=21}}
+        local ok,R=pcall(load, serialised)
         T:ASSERT(ok)
         R=R()
         T:ASSERT_EQ(R.a.aa.aaa, 111)
         T:ASSERT_EQ(R.a.ab.aba, 121)
         T:ASSERT_EQ(R.b.ba, 21)
     end),
-    TT("serialise_list", function(T)
+    TT("serialise_list 1", function(T)
         local serialised=alltag.formatany {{a=1, b=2}}
         local ok,R=pcall(load, serialised)
         T:ASSERT(ok)
@@ -127,7 +128,7 @@ TCASE "formatany" {
         T:ASSERT_EQ(R[1].a, 1)
         T:ASSERT_EQ(R[1].b, 2)
     end),
-    TT("serialise_list", function(T)
+    TT("serialise_list 2", function(T)
         local serialised=alltag.formatany {{a=1}, {b=2}, "hoppla"}
         local ok,R=pcall(load, serialised)
         T:ASSERT(ok)
