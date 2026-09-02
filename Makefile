@@ -16,7 +16,7 @@ alltag.so: b/main.o LuaAide/libLuaAide.a
 	@g++ -shared -fpic -o $@ $^
 
 b/%.o: src/%.cpp $(XHEADER)
-	@g++ -c -Wall -Werror -fpic -o $@ $< $(CPPFLAGS) $(CXXFLAGS)
+	@g++ -c -fpic -o $@ $< $(CPPFLAGS) $(CXXFLAGS)
 
 LuaAide/libLuaAide.a:
 	@echo "\nmake LuaAide"
