@@ -135,7 +135,9 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
     Q<<newtable
-        <<"0.1.4">>LuaField("version")
+        <<"0.1.5">>LuaField("version")
+        <<keys>>LuaField("keys")
+        <<sortedkeys>>LuaField("sortedkeys")
         <<formatany>>LuaField("formatany")
         <<keyescape>>LuaField("keyescape")
         <<demofail>>LuaField("demofail") // Produziert eine Fehlermeldung aus einem Aufruf von LuaAide.

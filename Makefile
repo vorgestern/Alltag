@@ -4,7 +4,7 @@ CXXFLAGS := --std=c++20 -Wall -Werror
 
 .PHONY: clean dir prerequisites test
 
-all: dir LuaAide/libLuaAide.a alltag.so
+all: dir staticlib alltag.so
 dir:
 	@mkdir -p b
 clean:
@@ -12,15 +12,15 @@ clean:
 	@make -C LuaAide clean
 
 alltag.so: b/main.o LuaAide/libLuaAide.a
+	@make -C LuaAide
 	@echo "\nmake alltag.so: $@"
 	@g++ -shared -fpic -o $@ $^
 
 b/%.o: src/%.cpp $(XHEADER)
 	@g++ -c -fpic -o $@ $< $(CPPFLAGS) $(CXXFLAGS)
 
-LuaAide/libLuaAide.a:
-	@echo "\nmake LuaAide"
-	@make -C LuaAide
+staticlib:
+	@make -sC LuaAide
 
 test:
 	@echo "\nAlltagstest"
