@@ -32,13 +32,6 @@ return function(L, func)
 end
 )__");
 
-const auto apply_impl=LuaCode(R"__(
-return function(L, proc)
-    if not L then return end
-    for _,v in ipairs(L) do proc(v) end
-end
-)__");
-
 const auto applypairs_impl=LuaCode(R"__(
 return function(L, proc)
     if not L then return end
@@ -117,10 +110,10 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
         <<formatany>>LuaField("formatany")
         <<keyescape>>LuaField("keyescape")
         <<demofail>>LuaField("demofail") // Produziert eine Fehlermeldung aus einem Aufruf von LuaAide.
-        <<LuaAide::map>>LuaField("map");
+        <<LuaAide::map>>LuaField("map")
+        <<LuaAide::apply>>LuaField("apply");
 
     Q<<make_pair("keymap-impl", keymap_impl)>>1; Q>>LuaField("keymap");
-    Q<<make_pair("apply-impl", apply_impl)>>1; Q>>LuaField("apply");
     Q<<make_pair("applypairs-impl", applypairs_impl)>>1; Q>>LuaField("applypairs");
     Q<<make_pair("findfirst-impl", findfirst_impl)>>1; Q>>LuaField("findfirst");
     Q<<make_pair("contains-impl", contains_impl)>>1; Q>>LuaField("contains");
