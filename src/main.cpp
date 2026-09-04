@@ -117,7 +117,7 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
         <<formatany>>LuaField("formatany")
         <<keyescape>>LuaField("keyescape")
         <<demofail>>LuaField("demofail") // Produziert eine Fehlermeldung aus einem Aufruf von LuaAide.
-        <<map>>LuaField("map");
+        <<LuaAide::map>>LuaField("map");
 
     Q<<make_pair("keymap-impl", keymap_impl)>>1; Q>>LuaField("keymap");
     Q<<make_pair("apply-impl", apply_impl)>>1; Q>>LuaField("apply");
