@@ -1,4 +1,5 @@
 
+-- Make sure to use locally built modules.
 local bpattern={
     ["/"]="./?.so;LuaAide/ulutest/?.so;",
     ["\\"]=".\\?.dll;LuaAide/ulutest\\?.dll;",
@@ -10,7 +11,8 @@ local ok,alltag=pcall(require, "alltag")
 if not ok then
     error("\n\tThis is a test suite for 'alltag'."..
     "\n\tHowever, require 'alltag' failed."..
-    "\n\tInstall and build it right here.")
+    "\n\tInstall and build it as a submodule right here."..
+    "\n\tmake is all that is needed.")
 end
 
 local ok,ULU=pcall(require, "ulutest")
@@ -18,7 +20,8 @@ local ok,ULU=pcall(require, "ulutest")
 if not ok then
     error("\n\tThis is a Unit Test implemented with 'ulutest'."..
     "\n\tHowever, require 'ulutest' failed."..
-    "\n\tBuild it as a submodule of submodule LuaAide right here.")
+    "\n\tBuild it as a submodule of submodule LuaAide right here."..
+    "\n\tmake is all that is needed.")
 end
 
 local TT=ULU.TT
@@ -328,15 +331,19 @@ TCASE "pipe_lines" {
         T:ASSERT(ok)
         T:ASSERT_EQ(0, count)
     end),
-    TT("empty", function(T)
+    TT("returncode", function(T)
+        T:ASSERT_EQ(0, alltag.pipe_lines("lua src/testhelper.lua exit 0", print))
+        T:ASSERT_EQ(77, alltag.pipe_lines("lua src/testhelper.lua exit 77", print))
+    end),
+    TT("tolerate empty command", function(T)
         local ok,rest=pcall(alltag.pipe_lines, "", function(line) end)
         T:ASSERT(ok)
+        T:PRINTF("for an empty call pipe_lines returns: %s", rest)
     end),
-    TT("tolerate nil", function(T)
-        local ok=pcall(alltag.pipe_lines, nil, function(v) end)
+    TT("handle nil command", function(T)
+        local ok,rest=pcall(alltag.pipe_lines, nil, function(v) end)
         T:ASSERT_NIL(ok)
-        local ok=pcall(alltag.pipe_lines, "lua src/testhelper.lua exit 0", nil)
-        T:ASSERT(ok)
+        T:PRINTF("pipe_lines returns: %s", rest)
     end),
 },
 

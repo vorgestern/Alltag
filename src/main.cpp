@@ -68,7 +68,10 @@ end
 
 const auto pipe_lines_impl=LuaCode(R"__(
 return function(command, linehandler)
-    local pipe=io.popen(command);
+    if type(command)~="string" then
+        error("Error: pipe_lines: First argument must be a string (command) but is of type "..type(command)..".")
+    end
+    local pipe=io.popen(command)
     if pipe then
         for line in pipe:lines() do linehandler(line) end
         local flag,status,rc=pipe:close()
