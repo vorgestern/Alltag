@@ -131,6 +131,30 @@ TCASE "formatany" {
         T:ASSERT_EQ(R[1].a, 1)
         T:ASSERT_EQ(R[1].b, 2)
     end),
+    TT("serialise mixed table", function(T)
+        local serialised=alltag.formatany {a=101, b=102, [3.14]="pi", 105, 106}
+        local ok,R=pcall(load, serialised)
+        T:ASSERT(ok)
+        R=R()
+        T:ASSERT_EQ(101, R.a)
+        T:ASSERT_EQ(102, R.b)
+        T:ASSERT_EQ(105, R[1])
+        T:ASSERT_EQ(106, R[2])
+        T:ASSERT_EQ("pi", R[3.14])
+    end),
+    -- TT("serialise mixed table", function(T)
+    --     local serialised=alltag.formatany {a=101, b=102, [true]=103, [false]=104, 105, [3.14]="pi", 106}
+    --     local ok,R=pcall(load, serialised)
+    --     T:ASSERT(ok)
+    --     R=R()
+    --     T:ASSERT_EQ(101, R.a)
+    --     T:ASSERT_EQ(102, R.b)
+    --     T:ASSERT_EQ(103, R[true])
+    --     T:ASSERT_EQ(104, R[false])
+    --     T:ASSERT_EQ(105, R[1])
+    --     T:ASSERT_EQ(106, R[2])
+    --     T:ASSERT_EQ("pi", R[3.14])
+    -- end),
     TT("serialise_list 2", function(T)
         local serialised=alltag.formatany {{a=1}, {b=2}, "hoppla"}
         local ok,R=pcall(load, serialised)
