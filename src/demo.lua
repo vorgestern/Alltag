@@ -1,4 +1,11 @@
 
+-- Make sure to use locally built modules.
+local bpattern={
+    ["/"]="./?.so;LuaAide/ulutest/?.so;",
+    ["\\"]=".\\?.dll;LuaAide/ulutest\\?.dll;",
+}
+package.cpath=(bpattern[package.config:sub(1,1)] or "") .. package.cpath
+
 local X=require "alltag"
 
 local demos={
@@ -39,8 +46,6 @@ local demos={
 
     function()
         print "Demo module 'alltag', function 'formatany', edge-cases"
-        local eins={}
-        local e={1}
         local K={
             21, 22, 23,
             a=31, b=32, c=33,
@@ -48,16 +53,13 @@ local demos={
             ["abc def"]="String mit Leerzeichen",
             ["abc\ndef"]="String mit Zeilenschaltung",
             [true]="bool (true)",
-            [false]="bool (false)",
-            [e]="list (1)",
-            [{1, 2}]="list (1, 2)",
-            [eins]="list eins"
+            [false]="bool (false)"
         }
         print(X.formatany(K))
         for _,k in ipairs {1, 2, 3, "a", "b", "c",
                 3.1415926, 3.1415926535, 3.141592653577,
-                "abc def", "abc\ndef", e, eins, true, false} do
-            print(k, K[k]);
+                "abc def", "abc\ndef", true, false} do
+            print(k, K[k])
         end
     end,
 
@@ -79,6 +81,30 @@ local demos={
         print(X.formatany(A, {4,5,6}, A, B, A, "more", 21.3, A))
     end,
 
+
+    function()
+        print "Demo module 'alltag', function 'formatany', over-the-edge-cases"
+        local eins={}
+        local e={1}
+        local K={
+            21, 22, 23,
+            a=31, b=32, c=33,
+            [3.1415926]="pi7", [3.1415926535]="pi10",
+            ["abc def"]="String mit Leerzeichen",
+            ["abc\ndef"]="String mit Zeilenschaltung",
+            [true]="bool (true)",
+            [false]="bool (false)",
+            [e]="list (1)",
+            [{1, 2}]="list (1, 2)",
+            [eins]="list eins"
+        }
+        print(X.formatany(K))
+        for _,k in ipairs {1, 2, 3, "a", "b", "c",
+                3.1415926, 3.1415926535, 3.141592653577,
+                "abc def", "abc\ndef", e, eins, true, false} do
+            print(k, K[k])
+        end
+    end,
 }
 
 local arg=...
