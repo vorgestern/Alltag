@@ -132,28 +132,47 @@ TCASE "formatany" {
         T:ASSERT_EQ(R[1].b, 2)
     end),
     TT("serialise mixed table", function(T)
-        local serialised=alltag.formatany {a=101, b=102, [3.14]="pi", 105, 106}
+        local serialised=alltag.formatany {a=101, b=102, [3.14]="pi", 105, [false]=106, [true]=107, 108}
         local ok,R=pcall(load, serialised)
         T:ASSERT(ok)
         R=R()
         T:ASSERT_EQ(101, R.a)
         T:ASSERT_EQ(102, R.b)
         T:ASSERT_EQ(105, R[1])
-        T:ASSERT_EQ(106, R[2])
+        T:ASSERT_EQ(108, R[2])
         T:ASSERT_EQ("pi", R[3.14])
+        T:ASSERT_EQ(106, R[false])
+        T:ASSERT_EQ(107, R[true])
     end),
-    -- TT("serialise mixed table", function(T)
-    --     local serialised=alltag.formatany {a=101, b=102, [true]=103, [false]=104, 105, [3.14]="pi", 106}
-    --     local ok,R=pcall(load, serialised)
-    --     T:ASSERT(ok)
-    --     R=R()
-    --     T:ASSERT_EQ(101, R.a)
-    --     T:ASSERT_EQ(102, R.b)
-    --     T:ASSERT_EQ(103, R[true])
-    --     T:ASSERT_EQ(104, R[false])
-    --     T:ASSERT_EQ(105, R[1])
-    --     T:ASSERT_EQ(106, R[2])
-    --     T:ASSERT_EQ("pi", R[3.14])
+    TT("serialise seriously mixed table (table keys)", function(T)
+        local t1={1}
+        local ok,serialised=pcall(alltag.formatany, {[t1]=101})
+        T:ASSERT_NIL(ok)
+        T:PRINTF("serialised='%s'", serialised)
+    end),
+    TT("serialise seriously mixed table (function keys)", function(T)
+        local func1=function() end
+        local ok,serialised=pcall(alltag.formatany, {[func1]=101})
+        T:ASSERT_NIL(ok)
+        T:PRINTF("serialised='%s'", serialised)
+    end),
+    TT("serialise seriously mixed table (thread keys)", function(T)
+        local X=coroutine.create(function() end)
+        local ok,serialised=pcall(alltag.formatany, {[X]=101})
+        T:ASSERT_NIL(ok)
+        T:PRINTF("serialised='%s'", serialised)
+    end),
+    -- TT("serialise seriously mixed table (userdata keys)", function(T)
+    --     local X=nil
+    --     local ok,serialised=pcall(alltag.formatany, {[X]=101})
+    --     T:ASSERT_NIL(ok)
+    --     T:PRINTF("serialised='%s'", serialised)
+    -- end),
+    -- TT("serialise seriously mixed table (lightuserdata keys)", function(T)
+    --     local X=nil
+    --     local ok,serialised=pcall(alltag.formatany, {[X]=101})
+    --     T:ASSERT_NIL(ok)
+    --     T:PRINTF("serialised='%s'", serialised)
     -- end),
     TT("serialise_list 2", function(T)
         local serialised=alltag.formatany {{a=1}, {b=2}, "hoppla"}
