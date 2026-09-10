@@ -3,6 +3,7 @@
 #include <iostream>
 #include <filesystem>
 
+using namespace LuaAide;
 using namespace std;
 using fspath=filesystem::path;
 
