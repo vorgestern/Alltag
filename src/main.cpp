@@ -1,16 +1,12 @@
 
 #include <LuaAide.h>
-#include <iostream>
-#include <filesystem>
 
 using namespace LuaAide;
-using namespace std;
-using fspath=filesystem::path;
 
 int demofail(lua_State*L)
 {
     LuaStack Q(L);
-    // Dieses Skript lässt sich nicht kompilieren (fehlende Klammer).
+    // This Script cannot be compiled (missing parenthesis).
     Q<<make_pair("Failing Demo", LuaCode(R"xxx(
         function translate(A,
             return 1
@@ -113,9 +109,9 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
         <<sortedkeys>>LuaField("sortedkeys")
         <<formatany>>LuaField("formatany")
         <<keyescape>>LuaField("keyescape")
-        <<demofail>>LuaField("demofail") // Produziert eine Fehlermeldung aus einem Aufruf von LuaAide.
-        <<LuaAide::map>>LuaField("map")
-        <<LuaAide::apply>>LuaField("apply");
+        <<demofail>>LuaField("demofail") // Produce an error message at runtime (i.e. Lua-compiletime).
+        <<map>>LuaField("map")
+        <<apply>>LuaField("apply");
 
     Q<<make_pair("keymap-impl", keymap_impl)>>1; Q>>LuaField("keymap");
     Q<<make_pair("applypairs-impl", applypairs_impl)>>1; Q>>LuaField("applypairs");
