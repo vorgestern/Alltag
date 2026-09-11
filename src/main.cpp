@@ -104,11 +104,12 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
     Q<<newtable
-        <<"0.1.5">>LuaField("version")
+        <<"0.1.6">>LuaField("version")
         <<keys>>LuaField("keys")
         <<sortedkeys>>LuaField("sortedkeys")
         <<formatany>>LuaField("formatany")
         <<keyescape>>LuaField("keyescape")
+        <<idfunc>>LuaField("idfunc")
         <<demofail>>LuaField("demofail") // Produce an error message at runtime (i.e. Lua-compiletime).
         <<map>>LuaField("map")
         <<apply>>LuaField("apply");

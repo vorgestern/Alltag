@@ -420,6 +420,37 @@ TCASE "sortedpairs" {
         for k,v in alltag.sortedpairs({a=1, b=2, c=3}, function(a,b) return a>b end) do table.insert(X, string.format("%s%s", k, v)) end
         T:ASSERT_EQ("c3, b2, a1", table.concat(X, ", "))
     end),
-}
+},
+
+TCASE "idfunc" {
+    TT("regular case", function(T)
+        local a,b,c,d=alltag.idfunc(21,22,23)
+        T:ASSERT_EQ(21, a)
+        T:ASSERT_EQ(22, b)
+        T:ASSERT_EQ(23, c)
+        T:ASSERT_EQ(nil, d)
+    end),
+    TT("handle nil like any other type", function(T)
+        local a,b,c,d=alltag.idfunc(21,nil,23)
+        T:ASSERT_EQ(21, a)
+        T:ASSERT_EQ(nil, b)
+        T:ASSERT_EQ(23, c)
+    end),
+    TT("return by ref", function(T)
+        local arg1={}
+        local a=alltag.idfunc(arg1)
+        T:ASSERT_EQ(arg1, a)
+    end),
+    TT("tolerate no arguments", function(T)
+        local a,b=alltag.idfunc()
+        T:ASSERT_EQ(nil, a)
+        T:ASSERT_EQ(nil, b)
+    end),
+    TT("tolerate nil", function(T)
+        local a,b=alltag.idfunc(nil)
+        T:ASSERT_EQ(nil, a)
+        T:ASSERT_EQ(nil, b)
+    end),
+},
 
 }
