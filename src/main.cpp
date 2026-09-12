@@ -1,5 +1,6 @@
 
 #include <LuaAide.h>
+#include <iostream>
 
 using namespace std;
 using namespace LuaAide;
@@ -84,9 +85,10 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
         <<keymap>>LuaField("keymap")
         <<applypairs>>LuaField("applypairs")
         <<findfirst>>LuaField("findfirst")
-        <<contains>>LuaField("contains");
+        <<contains>>LuaField("contains")
+        <<filter>>LuaField("filter");
 
-    Q<<LuaCode("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
+//  Q<<LuaCode("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
     Q<<LuaCode("pipe_lines-impl", pipe_lines_impl)>>1; Q>>LuaField("pipe_lines");
     Q<<LuaCode("sortedpairs-impl", sortedpairs_impl)>>1; Q>>LuaField("sortedpairs");
     return 1;
