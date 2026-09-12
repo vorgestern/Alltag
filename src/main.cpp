@@ -22,16 +22,6 @@ int demofail(lua_State*L)
 #define ALLTAG_EXPORTS
 #endif
 
-const auto filter_impl=R"__(
-return function(L, pred)
-    if not L then return end
-    if not pred then return {} end
-    local result={}
-    for k,v in ipairs(L) do if pred(v) then table.insert(result,v) end end
-    return result
-end
-)__";
-
 const auto pipe_lines_impl=R"__(
 return function(command, linehandler)
     if type(command)~="string" then
@@ -73,7 +63,7 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
     Q<<newtable
-        <<"0.1.7">>LuaField("version")
+        <<"0.1.8">>LuaField("version")
         <<keys>>LuaField("keys")
         <<sortedkeys>>LuaField("sortedkeys")
         <<formatany>>LuaField("formatany")
@@ -88,7 +78,6 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
         <<contains>>LuaField("contains")
         <<filter>>LuaField("filter");
 
-//  Q<<LuaCode("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
     Q<<LuaCode("pipe_lines-impl", pipe_lines_impl)>>1; Q>>LuaField("pipe_lines");
     Q<<LuaCode("sortedpairs-impl", sortedpairs_impl)>>1; Q>>LuaField("sortedpairs");
     return 1;
