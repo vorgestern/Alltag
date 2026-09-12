@@ -21,39 +21,6 @@ int demofail(lua_State*L)
 #define ALLTAG_EXPORTS
 #endif
 
-const auto keymap_impl=R"__(
-return function(L, func)
-    if not L then return end
-    local A={}
-    for k,v in pairs(L) do A[k]=func(v, k) end
-    return A
-end
-)__";
-
-const auto applypairs_impl=R"__(
-return function(L, proc)
-    if not L then return end
-    for k,v in pairs(L) do proc(k,v) end
-end
-)__";
-
-const auto findfirst_impl=R"__(
-return function(L, pred)
-    if not L then return end
-    pred=pred or function(x) return x end
-    for k,v in ipairs(L) do
-        if pred(v) then return v,k end
-    end
-end
-)__";
-
-const auto contains_impl=R"__(
-return function(L, item)
-    if not L or not item then return end
-    for k,v in pairs(L) do if v==item then return k end end
-end
-)__";
-
 const auto filter_impl=R"__(
 return function(L, pred)
     if not L then return end
@@ -115,20 +82,10 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
         <<map>>LuaField("map")
         <<apply>>LuaField("apply");
 
-    if (true)
-    {
-        Q<<keymap;     Q>>LuaField("keymap");
-        Q<<applypairs; Q>>LuaField("applypairs");
-        Q<<findfirst;  Q>>LuaField("findfirst");
-        Q<<contains;   Q>>LuaField("contains");
-    }
-    else
-    {
-        Q<<LuaCode("keymap-impl", keymap_impl)>>1;         Q>>LuaField("keymap");
-        Q<<LuaCode("applypairs-impl", applypairs_impl)>>1; Q>>LuaField("applypairs");
-        Q<<LuaCode("findfirst-impl", findfirst_impl)>>1;   Q>>LuaField("findfirst");
-        Q<<LuaCode("contains-impl", contains_impl)>>1;     Q>>LuaField("contains");
-    }
+    Q<<keymap;     Q>>LuaField("keymap");
+    Q<<applypairs; Q>>LuaField("applypairs");
+    Q<<findfirst;  Q>>LuaField("findfirst");
+    Q<<contains;   Q>>LuaField("contains");
 
     Q<<LuaCode("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
     Q<<LuaCode("pipe_lines-impl", pipe_lines_impl)>>1; Q>>LuaField("pipe_lines");
