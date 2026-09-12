@@ -72,7 +72,7 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
 {
     LuaStack Q(L);
     Q<<newtable
-        <<"0.1.6">>LuaField("version")
+        <<"0.1.7">>LuaField("version")
         <<keys>>LuaField("keys")
         <<sortedkeys>>LuaField("sortedkeys")
         <<formatany>>LuaField("formatany")
@@ -80,12 +80,11 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
         <<idfunc>>LuaField("idfunc")
         <<demofail>>LuaField("demofail") // Produce an error message at runtime (i.e. Lua-compiletime).
         <<map>>LuaField("map")
-        <<apply>>LuaField("apply");
-
-    Q<<keymap;     Q>>LuaField("keymap");
-    Q<<applypairs; Q>>LuaField("applypairs");
-    Q<<findfirst;  Q>>LuaField("findfirst");
-    Q<<contains;   Q>>LuaField("contains");
+        <<apply>>LuaField("apply")
+        <<keymap>>LuaField("keymap")
+        <<applypairs>>LuaField("applypairs")
+        <<findfirst>>LuaField("findfirst")
+        <<contains>>LuaField("contains");
 
     Q<<LuaCode("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
     Q<<LuaCode("pipe_lines-impl", pipe_lines_impl)>>1; Q>>LuaField("pipe_lines");
