@@ -1,6 +1,7 @@
 
 #include <LuaAide.h>
 
+using namespace std;
 using namespace LuaAide;
 
 int demofail(lua_State*L)
@@ -114,10 +115,21 @@ extern "C" ALLTAG_EXPORTS int luaopen_alltag(lua_State*L)
         <<map>>LuaField("map")
         <<apply>>LuaField("apply");
 
-    Q<<LuaCode("keymap-impl", keymap_impl)>>1; Q>>LuaField("keymap");
-    Q<<LuaCode("applypairs-impl", applypairs_impl)>>1; Q>>LuaField("applypairs");
-    Q<<LuaCode("findfirst-impl", findfirst_impl)>>1; Q>>LuaField("findfirst");
-    Q<<LuaCode("contains-impl", contains_impl)>>1; Q>>LuaField("contains");
+    if (true)
+    {
+        Q<<keymap;     Q>>LuaField("keymap");
+        Q<<applypairs; Q>>LuaField("applypairs");
+        Q<<findfirst;  Q>>LuaField("findfirst");
+        Q<<contains;   Q>>LuaField("contains");
+    }
+    else
+    {
+        Q<<LuaCode("keymap-impl", keymap_impl)>>1;         Q>>LuaField("keymap");
+        Q<<LuaCode("applypairs-impl", applypairs_impl)>>1; Q>>LuaField("applypairs");
+        Q<<LuaCode("findfirst-impl", findfirst_impl)>>1;   Q>>LuaField("findfirst");
+        Q<<LuaCode("contains-impl", contains_impl)>>1;     Q>>LuaField("contains");
+    }
+
     Q<<LuaCode("filter-impl", filter_impl)>>1; Q>>LuaField("filter");
     Q<<LuaCode("pipe_lines-impl", pipe_lines_impl)>>1; Q>>LuaField("pipe_lines");
     Q<<LuaCode("sortedpairs-impl", sortedpairs_impl)>>1; Q>>LuaField("sortedpairs");
