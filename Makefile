@@ -2,7 +2,7 @@
 CPPFLAGS := -ILuaAide/include -I/usr/include/lua5.4 -ILuaAide
 CXXFLAGS := --std=c++20 -Wall -Werror
 
-.PHONY: clean dir prerequisites test staticlib
+.PHONY: clean dir prerequisites staticlib test
 
 all: dir staticlib alltag.so
 dir:
@@ -22,6 +22,6 @@ b/%.o: src/%.cpp $(XHEADER)
 staticlib:
 	@make -C LuaAide
 
-test:
+test: alltag.so
 	@echo "\nAlltagstest"
 	@lua src/Alltagstest.lua
